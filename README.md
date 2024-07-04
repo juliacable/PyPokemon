@@ -1,0 +1,1 @@
+This project is a Python tool that allows users to enter the name of a Pokemon and get that pokemon's type and weaknesses. I made this to practice Python and API requests, and because I'm a Pokemon fan.
