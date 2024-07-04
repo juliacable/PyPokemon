@@ -1,7 +1,5 @@
 import requests
-
 import tkinter as tk
-#from tkinter import simpledialog, messagebox
 
 # Define the base URL for the PokeAPI
 base_url = 'https://pokeapi.co/api/v2/'
@@ -100,7 +98,6 @@ def print_info(pokemon_name):
 
     if data:
         arr_types = data['types']
-        print(arr_types)
 
         type_names = [arr_types["type"]["name"] for arr_types in data["types"]]
 
@@ -127,4 +124,4 @@ def print_info(pokemon_name):
         return "Pokemon not found!"
 
 
-custom_input_output_box("Pokemon Search", "Please enter Pokemon Name:", "lightblue", 400, 200)
+custom_input_output_box("Pokemon Search", "Please enter Pokemon Name:", "lightblue", 400, 400)
