@@ -1,7 +1,10 @@
 import requests
 
 import tkinter as tk
-from tkinter import simpledialog, messagebox
+#from tkinter import simpledialog, messagebox
+
+# Define the base URL for the PokeAPI
+base_url = 'https://pokeapi.co/api/v2/'
 
 # Type weaknesses dictionary
 type_weaknesses = {
@@ -26,13 +29,52 @@ type_weaknesses = {
 }
 
 
-# Initialize the main window (root)
-root = tk.Tk()
-root.configure(bg="red")
-root.withdraw()  # Hide the main window
+def custom_input_output_box(title, message, bg_color, width, height):
+    def on_submit():
+        user_input = entry.get()
+        s = print_info(user_input)
+        output_label.config(text=s)
 
-# Define the base URL for the PokeAPI
-base_url = 'https://pokeapi.co/api/v2/'
+    # Set and hide root
+    root = tk.Tk()
+    root.withdraw()
+   
+    # Create a new tkinter window
+    window = tk.Toplevel()
+    window.title(title) 
+    
+    # Set the window size using numeric values
+    window.geometry(f"{width}x{height}")
+    
+    # Configure the background color of the window
+    window.configure(bg=bg_color)
+    
+    # Create a label widget with the message
+    message_label = tk.Label(window, text=message, padx=20, pady=10, bg=bg_color)
+    message_label.pack(pady=10)
+    
+    # Create an entry widget for user input
+    entry = tk.Entry(window)
+    entry.pack(pady=10)
+    
+    # Create a submit button
+    submit_button = tk.Button(window, text="Submit", command=on_submit)
+    submit_button.pack(pady=10)
+    
+    # Create a label widget to display output
+    output_label = tk.Label(window, text="", padx=20, pady=10, bg=bg_color)
+    output_label.pack(pady=10)
+    
+    # Center the window on the screen
+    window.update_idletasks()
+    x = (window.winfo_screenwidth() // 2) - (width // 2)
+    y = (window.winfo_screenheight() // 2) - (height // 2)
+    window.geometry(f'{width}x{height}+{x}+{y}')
+    
+    # Run the window
+    window.mainloop()
+
+
 # Function to get Pokemon data
 def call_pokeapi(pokemon_name):
     # Construct the full URL for the request
@@ -51,11 +93,10 @@ def call_pokeapi(pokemon_name):
 # End of API interaction
 
 
-# Prompt the user for input
-pokemon_name = simpledialog.askstring("Input", "Enter a pokemon name:") 
 # Display a message box with the input
-if pokemon_name:
-    data = call_pokeapi(pokemon_name)
+def print_info(pokemon_name):
+    if pokemon_name:
+        data = call_pokeapi(pokemon_name)
 
     if data:
         arr_types = data['types']
@@ -81,11 +122,9 @@ if pokemon_name:
                 weaks += w + "  "
         
         s = "" + "Name: " + data['name'] + "\nType: " + typestring + "\nWeaknesses: " + weaks
-        messagebox.showinfo("Results", s)
+        return s
     else:
-        messagebox.showinfo("Results", f"Pokemon not found!")
+        return "Pokemon not found!"
 
 
-
-# Optional: Destroy the root window after use
-root.destroy()
+custom_input_output_box("Pokemon Search", "Please enter Pokemon Name:", "lightblue", 400, 200)
